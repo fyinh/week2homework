@@ -1,43 +1,28 @@
 
-# -*- coding: UTF-8 -*-
-
-import os
-import sys
-#import jieba
+# -*- coding:UTF-8 -*-
 import re
-reload(sys)
-sys.setdefaultencoding('utf-8')
+
+paths = '/home/gaolao/作业/'
+path1 = '/home/gaolao/作业/词典/'
+path2 = '/home/gaolao/作业/太空旅客.txt'
 
 
+js = ['反派','角色','角色中的其他','男主角','女主角','配角']
+jq = ['发展','结局','剧情','开头','泪点','笑点']
+st = ['动作','画面','镜头','视听','视听效果中的其他','音乐']
+zz = ['编剧','出品公司','导演','选景','制作']
+zt = ['风格','题材内容','主题']
+dic = {'角色':js,'剧情':jq,'视听':st,'制作':zz,'主题':zt}
 
 
-def getfile(path,charset = 'utf-8'):
-    with open(path) as f:
-        lines = [line.strip().decode(charset) for line in f.readlines()]
-    f.close()
-    return lines
-
-if __name__ == '__main__':
-    dict_word = {}
-
-    path = "/home/gaolao/homework/biaozhu/"
-    dirs = os.listdir(path)
-    for i in dirs:
-        pos_words = getfile(i)
-        for j in pos_words:
-            if j:
-                dict_word[j] = 0
-                print j
-
-    article = open('article.txt')
-
-    for doc in article:
-        words = jieba.cut(doc)
-        for word in words:
-            for pos_word in dict_word:
-                if word == pos_word:
-                    dict_word[pos_word] += 1
-
-
-    for i in dict_word:
-        print i + "这个词出现了" + str(dict_word[i]) + "次"
+with open(paths + 'result.txt','a') as result:
+    comment_result = {}
+    comments = open(path2)
+    for name in dic.keys():
+        for s_name in dic[name]:
+            words = open(path1 + s_name)
+            for word in words:
+                for comment in comments:
+                    if word in comment:
+                        comment_result[name] += 1
+        result.write(name + ':' + comment_result[name]+'\n')
